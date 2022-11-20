@@ -10,6 +10,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("javagame");
+//		com.badlogic.gdx.Graphics.DisplayMode display = Lwjgl3ApplicationConfiguration.getDisplayMode();
+//		config.setFullscreenMode(display);
 		new Lwjgl3Application(new Drop(), config);
 	}
 }
