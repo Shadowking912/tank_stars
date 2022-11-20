@@ -16,7 +16,7 @@ public class Drop extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // use libGDX's default Arial font
 		camera=new OrthographicCamera();
-		camera.setToOrtho(false, 800, 680);
+		camera.setToOrtho(false, 800, 580);
 		this.setScreen(new loading(this));
 		//this.setScreen(new MainMenu(this));
 	}
