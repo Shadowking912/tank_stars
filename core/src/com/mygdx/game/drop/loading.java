@@ -20,8 +20,8 @@ public class loading implements Screen {
     private long startTime = 0;
     private ShapeRenderer mShapeRenderer;
     final Drop game;
-    private final Texture backgroundImage,missiletexture,logo;
-    private final TextureRegion backgroundTexture;
+    private final Texture backgroundImage,missiletexture;
+    private final TextureRegion backgroundTexture,logo;
     OrthographicCamera camera;
 
     private Stage stage;
@@ -32,7 +32,7 @@ public class loading implements Screen {
         backgroundImage = new Texture(Gdx.files.internal("background5.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 1024, 500);
         missiletexture= new Texture(Gdx.files.internal("missile.png"));
-        logo= new Texture(Gdx.files.internal("logo.png"));
+        logo= new TextureRegion(new Texture(Gdx.files.internal("logo.png")));
         mShapeRenderer = new ShapeRenderer();
         startTime = TimeUtils.nanoTime();
 //        camera = new OrthographicCamera();
@@ -64,7 +64,6 @@ public class loading implements Screen {
             startTime = currentTimeStamp;
             progress = progress + 20;
         }
-        // Width of progress bar on screen relevant to Screen width
         float progressBarWidth = (600 / 100) * progress;
 
         mShapeRenderer.setProjectionMatrix(game.camera.combined);

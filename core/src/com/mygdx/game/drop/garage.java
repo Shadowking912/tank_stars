@@ -33,7 +33,7 @@ public class garage implements Screen {
     private final Texture backgroundImage,tankImage;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
-    private TextureRegion select;
+    private TextureRegion select,right;
     OrthographicCamera camera;
     private TextButton buttonPlay, buttonPlay2;
     private Skin skin;
@@ -44,7 +44,7 @@ public class garage implements Screen {
     private  FitViewport viewp;
     private BitmapFont bf_loadProgress;
     private window window1;
-    private ImageButton button3,buttonSelect;
+    private ImageButton button3,buttonSelect,buttonRight;
     public SpriteBatch batch;
 
     public garage(final Drop game) {
@@ -60,11 +60,13 @@ public class garage implements Screen {
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 388, 290);
         settings=new TextureRegion(new Texture(Gdx.files.internal("settings.png")),80,80);
         tankImage = new Texture(Gdx.files.internal("tank2/frost.png"));
-//        play1.
+        right=new TextureRegion(new Texture(Gdx.files.internal("right.png")));
+        select=new TextureRegion(new Texture(Gdx.files.internal("select.png")));
+
     }
     @Override
     public void show() {
-        window1 = new window();
+        window1 = new window(game);
         window1.setSize(500, 382);
         window1.setModal(true);
         window1.setVisible(false);
@@ -80,7 +82,18 @@ public class garage implements Screen {
                 window1.setVisible(true);
             }
         });
-        select=new TextureRegion(new Texture(Gdx.files.internal("select.png")));
+
+        buttonRight = new ImageButton(new TextureRegionDrawable(right));
+        buttonRight.setSize(40, 40);
+        buttonRight.setPosition(400,400);
+        buttonRight.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                window1.setVisible(true);
+            }
+        });
+
         Drawable drawable3 = new TextureRegionDrawable(select);
         buttonSelect = new ImageButton(drawable3);
         //buttonExit.setSize(200, 100);
@@ -97,6 +110,7 @@ public class garage implements Screen {
 
             }
         });
+        stage.addActor(buttonRight);
         stage.addActor(buttonSelect);
         stage.addActor(button3);
         stage.addActor(window1);

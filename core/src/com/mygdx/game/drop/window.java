@@ -2,6 +2,7 @@ package com.mygdx.game.drop;
 
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
      * @author serhiy
      */
     public class window extends Window {
-
         private static final WindowStyle windowStyle;
         static {
             TextureRegion settings = new TextureRegion(new Texture(Gdx.files.internal("window/window2.png")), 500, 382);
@@ -34,10 +34,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
         /**
          * Default constructor.
          */
-        public window() {
+        public window(final Drop game) {
             super("", windowStyle);
-
-//            final Button closeButton = new ImageButton(closeButtonStyle);
+//                super.draw(game.batch, 1);
 //            closeButton.addListener(new ClickListener() {
 //                @Override
 //                public void clicked(InputEvent event, float x, float y) {

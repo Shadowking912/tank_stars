@@ -44,7 +44,7 @@ public class gamemenu implements Screen {
     private  FitViewport viewp;
     private BitmapFont bf_loadProgress;
     private window window1;
-    private ImageButton button3,buttonBattle;
+    private ImageButton button3,buttonBattle,buttonComputer,buttonBack,buttonWeapons;
     public SpriteBatch batch;
 
     public gamemenu(final Drop game) {
@@ -64,7 +64,7 @@ public class gamemenu implements Screen {
     }
     @Override
     public void show() {
-        window1 = new window();
+        window1 = new window(game);
         window1.setSize(500, 382);
         window1.setModal(true);
         window1.setVisible(false);
@@ -80,9 +80,10 @@ public class gamemenu implements Screen {
                 window1.setVisible(true);
             }
         });
-        battle=new TextureRegion(new Texture(Gdx.files.internal("battle.png")));
-        Drawable drawable3 = new TextureRegionDrawable(battle);
-        buttonBattle = new ImageButton(drawable3);
+
+
+
+        buttonBattle = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("battle.png")))));
         //buttonExit.setSize(200, 100);
         buttonBattle.setScale(0.6f);
         buttonBattle.setPosition(530,450);
@@ -94,13 +95,56 @@ public class gamemenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
                 game.setScreen(new garage(game));
-
             }
         });
+        buttonComputer = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("computer.png")))));
+        //buttonExit.setSize(200, 100);
+        buttonComputer.setScale(0.6f);
+        buttonComputer.setPosition(530,360);
+        buttonComputer.setTransform(true);
+//        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
+        buttonComputer.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        buttonComputer.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                game.setScreen(new garage(game));
+            }
+        });
+        buttonBack = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("back.png")))));
+        //buttonExit.setSize(200, 100);
+        buttonBack.setScale(0.6f);
+        buttonBack.setPosition(530,180);
+        buttonBack.setTransform(true);
+//        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
+        buttonBack.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        buttonBack.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                game.setScreen(new garage(game));
+            }
+        });
+        buttonWeapons = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("WEAPONS.png")))));
+        //buttonExit.setSize(200, 100);
+        buttonWeapons .setScale(0.6f);
+        buttonWeapons .setPosition(530,270);
+        buttonWeapons .setTransform(true);
+//        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
+        buttonWeapons .addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        buttonWeapons .addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                game.setScreen(new garage(game));
+            }
+        });
+        stage.addActor(buttonWeapons);
+        stage.addActor(buttonBack);
+        stage.addActor(buttonComputer);
         stage.addActor(buttonBattle);
         stage.addActor(button3);
         stage.addActor(window1);
-
     }
     @Override
     public void render(float delta) {
@@ -115,7 +159,7 @@ public class gamemenu implements Screen {
         batch.flush();
         mShapeRenderer.setProjectionMatrix(camera.combined);
         mShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        mShapeRenderer.setColor(Color.PURPLE);
+        mShapeRenderer.setColor(Color.ROYAL);
         mShapeRenderer.rect(500, 0, 400, 600);
         mShapeRenderer.end();
         stage.act();
