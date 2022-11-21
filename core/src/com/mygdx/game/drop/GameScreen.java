@@ -16,14 +16,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.controllers.PovDirection;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen,ControllerListener {
     final Drop game;
 
     Texture dropImage;
     Texture bucketImage;
 
-    private final Texture backgroundImage;
+    private final Texture backgroundImage,terrainImage,tankImage;
     private final TextureRegion backgroundTexture;
     Sound dropSound;
     Music rainMusic;
@@ -37,67 +38,32 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
-        dropImage = new Texture(Gdx.files.internal("drop.png"));
-        bucketImage = new Texture(Gdx.files.internal("bucket.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background2.jpg"));
-        backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 1010, 505);
+        backgroundImage = new Texture(Gdx.files.internal("bg1.png"));
+        backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 1280, 720);
+        terrainImage = new Texture(Gdx.files.internal("terrain2.png"));
+        tankImage = new Texture(Gdx.files.internal("tank3/tank3.png"));
 
         // load the drop sound effect and the rain background "music"
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-        rainMusic.setLooping(true);
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
         // create a Rectangle to logically represent the bucket
-        bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-        bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
-        // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 64;
-
-        // create the raindrops array and spawn the first raindrop
-        raindrops = new Array<Rectangle>();
-        spawnRaindrop();
 
     }
 
-    private void spawnRaindrop() {
-        Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, 800 - 64);
-        raindrop.y = 480;
-        raindrop.width = 64;
-        raindrop.height = 64;
-        raindrops.add(raindrop);
-        lastDropTime = TimeUtils.nanoTime();
-    }
+
 
     @Override
     public void render(float delta) {
-        // clear the screen with a dark blue color. The
-//        // arguments to clear are the red, green
-//        // blue and alpha component in the range [0,1]
-//        // of the color to be used to clear the screen.
         ScreenUtils.clear(0, 0, 0.2f, 1);
-
-        // tell the camera to update its matrices.
         camera.update();
-//
-//        // tell the SpriteBatch to render in the
-//        // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
-//        // begin a new batch and draw the bucket and
-//        // all drops
         game.batch.begin();
-        game.batch.draw(backgroundTexture, 0,0, 800, 480);
-//        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
-        game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
-//        for (Rectangle raindrop : raindrops) {
-//            game.batch.draw(dropImage, raindrop.x, raindrop.y);
-//        }
+        game.batch.draw(backgroundTexture, 0,50, 800, 580);
+        game.batch.draw(terrainImage, 0, 0,800,200);
+        game.batch.draw(tankImage, 150, 110,50,37);
         game.batch.end();
 //
 //        // process user input
@@ -146,8 +112,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // start the playback of the background music
-        // when the screen is shown
-        rainMusic.play();
     }
 
     @Override
@@ -164,10 +128,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        dropImage.dispose();
-        bucketImage.dispose();
-        dropSound.dispose();
-        rainMusic.dispose();
     }
 
 }

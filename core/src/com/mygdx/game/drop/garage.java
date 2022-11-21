@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
-public class gamemenu implements Screen {
+public class garage implements Screen {
     private long progress = 0;
     private long startTime = 0;
     private ShapeRenderer mShapeRenderer;
@@ -33,7 +33,7 @@ public class gamemenu implements Screen {
     private final Texture backgroundImage,tankImage;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
-    private TextureRegion battle;
+    private TextureRegion select;
     OrthographicCamera camera;
     private TextButton buttonPlay, buttonPlay2;
     private Skin skin;
@@ -44,10 +44,10 @@ public class gamemenu implements Screen {
     private  FitViewport viewp;
     private BitmapFont bf_loadProgress;
     private window window1;
-    private ImageButton button3,buttonBattle;
+    private ImageButton button3,buttonSelect;
     public SpriteBatch batch;
 
-    public gamemenu(final Drop game) {
+    public garage(final Drop game) {
         this.game = game;
         batch=new SpriteBatch();
         mShapeRenderer = new ShapeRenderer();
@@ -59,7 +59,7 @@ public class gamemenu implements Screen {
         backgroundImage = new Texture(Gdx.files.internal("garage.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 388, 290);
         settings=new TextureRegion(new Texture(Gdx.files.internal("settings.png")),80,80);
-        tankImage = new Texture(Gdx.files.internal("tank3/tank3.png"));
+        tankImage = new Texture(Gdx.files.internal("tank2/frost.png"));
 //        play1.
     }
     @Override
@@ -80,24 +80,24 @@ public class gamemenu implements Screen {
                 window1.setVisible(true);
             }
         });
-        battle=new TextureRegion(new Texture(Gdx.files.internal("battle.png")));
-        Drawable drawable3 = new TextureRegionDrawable(battle);
-        buttonBattle = new ImageButton(drawable3);
+        select=new TextureRegion(new Texture(Gdx.files.internal("select.png")));
+        Drawable drawable3 = new TextureRegionDrawable(select);
+        buttonSelect = new ImageButton(drawable3);
         //buttonExit.setSize(200, 100);
-        buttonBattle.setScale(0.6f);
-        buttonBattle.setPosition(530,450);
-        buttonBattle.setTransform(true);
+        buttonSelect.setScale(0.6f);
+        buttonSelect.setPosition(250,50);
+        buttonSelect.setTransform(true);
 //        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
-        buttonBattle.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
-        buttonBattle.addListener(new ClickListener() {
+        buttonSelect.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        buttonSelect.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new garage(game));
+                game.setScreen(new GameScreen(game));
 
             }
         });
-        stage.addActor(buttonBattle);
+        stage.addActor(buttonSelect);
         stage.addActor(button3);
         stage.addActor(window1);
 
@@ -110,14 +110,9 @@ public class gamemenu implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(backgroundTexture, 0,0, 800, 600);
-        batch.draw(tankImage, 10, 145,450,250);
+        batch.draw(tankImage, 180, 145,450,250);
         batch.end();
         batch.flush();
-        mShapeRenderer.setProjectionMatrix(camera.combined);
-        mShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        mShapeRenderer.setColor(Color.PURPLE);
-        mShapeRenderer.rect(500, 0, 400, 600);
-        mShapeRenderer.end();
         stage.act();
         stage.draw();
     }
@@ -148,4 +143,5 @@ public class gamemenu implements Screen {
     }
 
 }
+
 
