@@ -1,0 +1,10 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+	"default-horizontal": {
+		"parent": "default-horizontal",
+		"backgroundOver": "PixCut-removebg_low (1) (3)",
+		"knobOver": "PixCut-removebg_low (6)",
+		"background": "PixCut-removebg_low (1) (3)"
+	}
+}
+}

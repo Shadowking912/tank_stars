@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.drop.Drop;
+import com.mygdx.game.stars.tankstars;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -12,6 +12,6 @@ public class DesktopLauncher {
 		config.setTitle("javagame");
 //		com.badlogic.gdx.Graphics.DisplayMode display = Lwjgl3ApplicationConfiguration.getDisplayMode();
 //		config.setFullscreenMode(display);
-		new Lwjgl3Application(new Drop(), config);
+		new Lwjgl3Application(new tankstars(), config);
 	}
 }

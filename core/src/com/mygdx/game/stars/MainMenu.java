@@ -1,4 +1,4 @@
-package com.mygdx.game.drop;
+package com.mygdx.game.stars;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,45 +10,38 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.io.Serializable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class MainMenu implements Screen {
+public class MainMenu implements Screen, Serializable {
 
-    final Drop game;
+    private final tankstars game;
     private final Texture backgroundImage,logo;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
     private TextureRegion play1,exit,resume;
-    OrthographicCamera camera;
-    private TextButton buttonPlay2;
+    private OrthographicCamera camera;
     private ImageButton button3,buttonPlay,buttonExit,buttonResume;
-    private Skin skin;
     private Stage stage;
     private  FitViewport viewp;
     private Sound sound;
     private Music music;
     private window window1;
-    public MainMenu(final Drop game) {
+    public MainMenu(final tankstars game) {
         camera=new OrthographicCamera();
         camera.setToOrtho(false, 800, 580);
         this.game = game;
         this.stage = new Stage(new FillViewport(800,580,camera));
-
+        Gdx.input.setInputProcessor(stage);
         //stage.clear();
         backgroundImage = new Texture(Gdx.files.internal("background5.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 1024, 500);
@@ -98,23 +91,19 @@ public class MainMenu implements Screen {
         buttonResume.setScale(0.6f);
         buttonResume.setPosition(270,180);
         buttonResume.setTransform(true);
-        buttonResume.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("resume_down.png")),822,304));
+        buttonResume.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("resume_down.png"))));
         buttonResume.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         buttonResume.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new loadgame(game));
+//                game.setScreen(new GameScreen(game));
 
             }
         });
         window1 = new window(game);
-        window1.setSize(500, 382);
-        window1.setModal(true);
-        window1.setVisible(false);
-        window1.setMovable(true);
         window1.setPosition(140,120);
-
 
         Drawable drawable = new TextureRegionDrawable(settings);
         button3 = new ImageButton(drawable);
@@ -129,6 +118,7 @@ public class MainMenu implements Screen {
                 window1.setVisible(true);
             }
         });
+
         stage.addActor(buttonPlay);
         stage.addActor(buttonExit);
         stage.addActor(button3);
@@ -143,13 +133,12 @@ public class MainMenu implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(backgroundTexture, 0,0, 800, 580);
-        game.batch.draw(logo, 200,300, 360, 360);
+        game.batch.draw(backgroundTexture, 0, 0, 800, 580);
+        game.batch.draw(logo, 200, 300, 360, 360);
         game.batch.end();
         stage.act();
         stage.draw();
         }
-
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -168,11 +157,9 @@ public class MainMenu implements Screen {
     public void hide() {
 
     }
-
     @Override
     public void dispose() {
         music.stop();
         stage.dispose();
     }
-
 }

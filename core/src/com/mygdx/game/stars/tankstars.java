@@ -1,13 +1,14 @@
-package com.mygdx.game.drop;
+package com.mygdx.game.stars;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.Serializable;
 
-public class Drop extends Game {
 
+public class tankstars extends Game implements Serializable {
 	public SpriteBatch batch;
 	public BitmapFont font;
 	public OrthographicCamera camera;

@@ -1,33 +1,26 @@
-package com.mygdx.game.drop;
+package com.mygdx.game.stars;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import jdk.jfr.internal.tool.Main;
+
+import java.io.Serializable;
 
 
-public class loading implements Screen {
+public class loading implements Screen, Serializable {
     private long progress = 0;
     private long startTime = 0;
-    private ShapeRenderer mShapeRenderer;
-    final Drop game;
+    private final ShapeRenderer mShapeRenderer;
+    private final tankstars game;
     private final Texture backgroundImage,missiletexture;
     private final TextureRegion backgroundTexture,logo;
-    OrthographicCamera camera;
-
-    private Stage stage;
-    private  FitViewport viewp;
-    private BitmapFont bf_loadProgress;
-    public loading(final Drop game) {
+    public loading(final tankstars game) {
         this.game = game;
         backgroundImage = new Texture(Gdx.files.internal("background5.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 1024, 500);
@@ -35,8 +28,7 @@ public class loading implements Screen {
         logo= new TextureRegion(new Texture(Gdx.files.internal("logo.png")));
         mShapeRenderer = new ShapeRenderer();
         startTime = TimeUtils.nanoTime();
-//        camera = new OrthographicCamera();
-//        camera.setToOrtho(false, 800, 580);
+
     }
     @Override
     public void show() {

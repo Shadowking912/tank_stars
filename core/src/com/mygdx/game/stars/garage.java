@@ -1,53 +1,48 @@
-package com.mygdx.game.drop;
+package com.mygdx.game.stars;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.io.Serializable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
-public class garage implements Screen {
-    private long progress = 0;
-    private long startTime = 0;
+public class garage implements Screen, Serializable {
     private ShapeRenderer mShapeRenderer;
-    final Drop game;
-    private final Texture backgroundImage,tankImage;
+    private final tankstars game;
+    private final Texture backgroundImage;
+    private Texture tankImage;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
-    private TextureRegion select,right;
-    OrthographicCamera camera;
-    private TextButton buttonPlay, buttonPlay2;
-    private Skin skin;
-    private TextureRegionDrawable textureBar;
-    private ProgressBar.ProgressBarStyle barStyle;
-    private ProgressBar bar;
-    private Stage stage;
-    private  FitViewport viewp;
-    private BitmapFont bf_loadProgress;
-    private window window1;
-    private ImageButton button3,buttonSelect,buttonRight;
-    public SpriteBatch batch;
+    private TextureRegion select,right,left;
+    private OrthographicCamera camera;
 
-    public garage(final Drop game) {
+    private Stage stage;
+    private window window1;
+    private ImageButton button3,buttonSelect,buttonRight,buttonLeft;
+    public SpriteBatch batch;
+    private tanks tankslist[]={new tank1(),new tank2(),new tank3()};
+    private int current=0;
+    private int pl;
+    private Music music;
+    private player p1,p2;
+
+    public garage(final tankstars game,int p) {
+        this.pl=p;
         this.game = game;
         batch=new SpriteBatch();
         mShapeRenderer = new ShapeRenderer();
@@ -58,20 +53,22 @@ public class garage implements Screen {
         stage.clear();
         backgroundImage = new Texture(Gdx.files.internal("garage.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 388, 290);
+        tankImage=tankslist[current].getTankImage();
         settings=new TextureRegion(new Texture(Gdx.files.internal("settings.png")),80,80);
-        tankImage = new Texture(Gdx.files.internal("tank2/frost.png"));
         right=new TextureRegion(new Texture(Gdx.files.internal("right.png")));
+        left=new TextureRegion(new Texture(Gdx.files.internal("left.png")));
         select=new TextureRegion(new Texture(Gdx.files.internal("select.png")));
+        music=Gdx.audio.newMusic(Gdx.files.internal("tank1/idle.mp3"));
+        music.setLooping(true);
+        music.play();
 
     }
     @Override
     public void show() {
         window1 = new window(game);
-        window1.setSize(500, 382);
-        window1.setModal(true);
-        window1.setVisible(false);
-        window1.setMovable(true);
         window1.setPosition(140,120);
+        window1.row().pad(20,0,0,0);
+        window1.exitb();
         Drawable drawable = new TextureRegionDrawable(settings);
         button3 = new ImageButton(drawable);
         button3.setSize(40, 40);
@@ -85,18 +82,27 @@ public class garage implements Screen {
 
         buttonRight = new ImageButton(new TextureRegionDrawable(right));
         buttonRight.setSize(40, 40);
-        buttonRight.setPosition(400,400);
+        buttonRight.setPosition(750,300);
         buttonRight.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                window1.setVisible(true);
+                selectTankright();
+            }
+        });
+        buttonLeft = new ImageButton(new TextureRegionDrawable(left));
+        buttonLeft.setSize(40, 40);
+        buttonLeft.setPosition(10,295);
+        buttonLeft.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectTankleft();
             }
         });
 
         Drawable drawable3 = new TextureRegionDrawable(select);
         buttonSelect = new ImageButton(drawable3);
-        //buttonExit.setSize(200, 100);
         buttonSelect.setScale(0.6f);
         buttonSelect.setPosition(250,50);
         buttonSelect.setTransform(true);
@@ -105,11 +111,15 @@ public class garage implements Screen {
         buttonSelect.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                game.setScreen(new GameScreen(game));
+                //dispose();
+                p1=new player(tankslist[current]);
+                p2=new player(tankslist[current]);
+                music.stop();
+                game.setScreen(new GameScreen(game,p1,p2));
 
             }
         });
+        stage.addActor(buttonLeft);
         stage.addActor(buttonRight);
         stage.addActor(buttonSelect);
         stage.addActor(button3);
@@ -119,7 +129,6 @@ public class garage implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -155,7 +164,20 @@ public class garage implements Screen {
         stage.dispose();
         mShapeRenderer.dispose();
     }
-
+    public void selectTankright(){
+        if(current==2){
+            current=-1;
+        }
+        tankImage=tankslist[current+1].getTankImage();
+        current++;
+    }
+    public void selectTankleft(){
+        if(current==0){
+            current=3;
+        }
+        tankImage=tankslist[current-1].getTankImage();
+        current--;
+    }
 }
 
 

@@ -1,0 +1,21 @@
+ui.png
+size: 927, 148
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+default-slider
+  rotate: false
+  xy: 0, 0
+  size: 685, 140
+  split: 171, 171, 35, 35
+  orig: 685, 140
+  offset: 0, 0
+  index: -1
+default-slider-knob
+  rotate: false
+  xy: 685, 0
+  size: 242, 148
+  split: 61, 60, 37, 37
+  orig: 242, 148
+  offset: 0, 0
+  index: -1

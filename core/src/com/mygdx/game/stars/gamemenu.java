@@ -1,7 +1,5 @@
-package com.mygdx.game.drop;
+package com.mygdx.game.stars;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
@@ -12,42 +10,30 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import java.io.Serializable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
-public class gamemenu implements Screen {
-    private long progress = 0;
-    private long startTime = 0;
+public class gamemenu implements Screen, Serializable {
     private ShapeRenderer mShapeRenderer;
-    final Drop game;
+    private final tankstars game;
     private final Texture backgroundImage,tankImage;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
     private TextureRegion battle;
-    OrthographicCamera camera;
-    private TextButton buttonPlay, buttonPlay2;
-    private Skin skin;
-    private TextureRegionDrawable textureBar;
-    private ProgressBar.ProgressBarStyle barStyle;
-    private ProgressBar bar;
+    private OrthographicCamera camera;
     private Stage stage;
-    private  FitViewport viewp;
-    private BitmapFont bf_loadProgress;
     private window window1;
     private ImageButton button3,buttonBattle,buttonComputer,buttonBack,buttonWeapons;
     public SpriteBatch batch;
 
-    public gamemenu(final Drop game) {
+    public gamemenu(final tankstars game) {
         this.game = game;
         batch=new SpriteBatch();
         mShapeRenderer = new ShapeRenderer();
@@ -65,11 +51,9 @@ public class gamemenu implements Screen {
     @Override
     public void show() {
         window1 = new window(game);
-        window1.setSize(500, 382);
-        window1.setModal(true);
-        window1.setVisible(false);
-        window1.setMovable(true);
         window1.setPosition(140,120);
+        window1.row().pad(20,0,0,0);
+        window1.exitb();
         Drawable drawable = new TextureRegionDrawable(settings);
         button3 = new ImageButton(drawable);
         button3.setSize(40, 40);
@@ -84,7 +68,6 @@ public class gamemenu implements Screen {
 
 
         buttonBattle = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("battle.png")))));
-        //buttonExit.setSize(200, 100);
         buttonBattle.setScale(0.6f);
         buttonBattle.setPosition(530,450);
         buttonBattle.setTransform(true);
@@ -94,7 +77,7 @@ public class gamemenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new garage(game));
+                game.setScreen(new garage(game,0));
             }
         });
         buttonComputer = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("computer.png")))));
@@ -108,7 +91,7 @@ public class gamemenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new garage(game));
+                game.setScreen(new garage(game,0));
             }
         });
         buttonBack = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("back.png")))));
@@ -122,7 +105,7 @@ public class gamemenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new garage(game));
+                game.setScreen(new MainMenu(game));
             }
         });
         buttonWeapons = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("WEAPONS.png")))));
@@ -136,7 +119,7 @@ public class gamemenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new garage(game));
+                game.setScreen(new garage(game,0));
             }
         });
         stage.addActor(buttonWeapons);
