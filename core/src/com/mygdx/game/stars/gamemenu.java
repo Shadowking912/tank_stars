@@ -1,5 +1,7 @@
 package com.mygdx.game.stars;
 
+import java.io.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
@@ -15,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.io.IOException;
 import java.io.Serializable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -32,6 +36,8 @@ public class gamemenu implements Screen, Serializable {
     private window window1;
     private ImageButton button3,buttonBattle,buttonComputer,buttonBack,buttonWeapons;
     public SpriteBatch batch;
+
+
 
     public gamemenu(final tankstars game) {
         this.game = game;
@@ -69,7 +75,7 @@ public class gamemenu implements Screen, Serializable {
 
         buttonBattle = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("battle.png")))));
         buttonBattle.setScale(0.6f);
-        buttonBattle.setPosition(530,450);
+        buttonBattle.setPosition(530,350);
         buttonBattle.setTransform(true);
 //        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
         buttonBattle.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
@@ -80,24 +86,10 @@ public class gamemenu implements Screen, Serializable {
                 game.setScreen(new garage(game,0));
             }
         });
-        buttonComputer = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("computer.png")))));
-        //buttonExit.setSize(200, 100);
-        buttonComputer.setScale(0.6f);
-        buttonComputer.setPosition(530,360);
-        buttonComputer.setTransform(true);
-//        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
-        buttonComputer.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
-        buttonComputer.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                game.setScreen(new garage(game,0));
-            }
-        });
         buttonBack = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("back.png")))));
         //buttonExit.setSize(200, 100);
         buttonBack.setScale(0.6f);
-        buttonBack.setPosition(530,180);
+        buttonBack.setPosition(530,250);
         buttonBack.setTransform(true);
 //        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
         buttonBack.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
@@ -108,23 +100,7 @@ public class gamemenu implements Screen, Serializable {
                 game.setScreen(new MainMenu(game));
             }
         });
-        buttonWeapons = new ImageButton(new TextureRegionDrawable(battle=new TextureRegion(new Texture(Gdx.files.internal("WEAPONS.png")))));
-        //buttonExit.setSize(200, 100);
-        buttonWeapons .setScale(0.6f);
-        buttonWeapons .setPosition(530,270);
-        buttonWeapons .setTransform(true);
-//        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("exit_down.png")),822,304));
-        buttonWeapons .addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
-        buttonWeapons .addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                game.setScreen(new garage(game,0));
-            }
-        });
-        stage.addActor(buttonWeapons);
         stage.addActor(buttonBack);
-        stage.addActor(buttonComputer);
         stage.addActor(buttonBattle);
         stage.addActor(button3);
         stage.addActor(window1);
@@ -132,7 +108,6 @@ public class gamemenu implements Screen, Serializable {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();

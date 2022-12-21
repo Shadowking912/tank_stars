@@ -1,0 +1,81 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "untitled.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "ground1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "main.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "terrain2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "untitled.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 358,
+                "y": 612.5
+            }
+        },
+        "untitled.tmx#SpriteCollection_Terrain0": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#g1": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#g4": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#g7": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#main": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#terrain": {
+            "scaleInDock": 1
+        },
+        "untitled.tmx#terrain2": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/gupta/Desktop/javagame/assets/ground",
+    "last.externalTilesetPath": "C:/Users/gupta/Desktop/javagame/assets/ground",
+    "last.imagePath": "C:/Users/gupta/Desktop/javagame/assets/ground",
+    "last.objectTemplatePath": "C:/Users/gupta/Desktop/javagame/assets/ground",
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "untitled.tmx"
+    ],
+    "project": "tile1.tiled-project",
+    "recentFiles": [
+        "untitled.tmx",
+        "terrain2.tsx",
+        "ground1.tsx",
+        "main.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}

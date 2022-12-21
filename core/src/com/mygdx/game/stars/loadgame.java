@@ -1,5 +1,7 @@
 package com.mygdx.game.stars;
 
+import java.io.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -36,6 +39,25 @@ public class loadgame implements Screen, Serializable {
     private Sound sound;
     private Music music;
     private window window1;
+
+    public static Gamesave deserialize(int save_number)
+            throws IOException, ClassNotFoundException {
+        Gamesave saved;
+        saved = null;
+        ObjectInputStream in = null;
+        saved = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream("C:\\Users\\gupta\\Desktop\\saves\\save_" + save_number +".bin"));
+            saved = (Gamesave) in.readObject();
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            in.close();
+        }
+        return saved;
+    }
     public loadgame(final tankstars game) {
         camera=new OrthographicCamera();
         camera.setToOrtho(false, 800, 580);
@@ -65,22 +87,45 @@ public class loadgame implements Screen, Serializable {
         buttonSave1.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         buttonSave1.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dispose();
+            public void clicked(InputEvent event, float x, float y)
+            {
+
+                try
+                {
+                    Gamesave loaded = loadgame.deserialize(1);
+                    System.out.println("loading");
+                    game.setScreen(new GameScreen(game,null,null,loaded));
+                    //TODO deal with this loaded gamescreen, initiate or whatever
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Problem encountered in loading shit");
+                }
+
+//                dispose();
             }
         });
         exit=new TextureRegion(new Texture(Gdx.files.internal("save2.png")));
         Drawable drawable3 = new TextureRegionDrawable(exit);
         buttonSave2 = new ImageButton(drawable3);
         buttonSave2.setScale(0.6f);
-        buttonSave2.setPosition(270,110);
+        buttonSave2.setPosition(270,180);
         buttonSave2.setTransform(true);
         buttonSave2.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         buttonSave2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.dispose();
-                System.exit(0);
+                try
+                {
+                    Gamesave loaded = loadgame.deserialize(2);
+                    //TODO deal with this loaded gamescreen, initiate or whatever
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Problem encountered in loading shit");
+                }
+//                game.dispose();
+//                System.exit(0);
 
             }
         });
@@ -88,15 +133,24 @@ public class loadgame implements Screen, Serializable {
         Drawable drawable4 = new TextureRegionDrawable(resume);
         buttonSave3 = new ImageButton(drawable4);
         buttonSave3.setScale(0.6f);
-        buttonSave3.setPosition(270,180);
+        buttonSave3.setPosition(270,110);
         buttonSave3.setTransform(true);
         buttonSave3.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("resume_down.png"))));
         buttonSave3.addAction(sequence(alpha(0), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         buttonSave3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                System.exit(0);
+                try
+                {
+                    Gamesave loaded = loadgame.deserialize(3);
+                    //TODO deal with this loaded gamescreen, initiate or whatever
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Problem encountered in loading shit");
+                }
+//                dispose();
+//                System.exit(0);
 //                game.setScreen(new GameScreen(game));
 
             }
@@ -130,7 +184,6 @@ public class loadgame implements Screen, Serializable {
                 window1.setVisible(true);
             }
         });
-        
 
         stage.addActor(buttonSave1);
         stage.addActor(buttonSave2);

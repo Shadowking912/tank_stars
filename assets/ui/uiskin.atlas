@@ -1,0 +1,29 @@
+
+uiskin.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+default
+  rotate: false
+  xy: 1, 176
+  size: 254, 77
+  orig: 254, 77
+  offset: 0, 0
+  index: -1
+default-slider
+  rotate: false
+  xy: 82, 150
+  size: 8, 8
+  split: 2, 2, 2, 2
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+default-slider-knob
+  rotate: false
+  xy: 1, 143
+  size: 50, 31
+  split: 0, 0, 0, 0
+  orig: 50, 31
+  offset: 0, 0
+  index: -1

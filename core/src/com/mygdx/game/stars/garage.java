@@ -25,7 +25,7 @@ public class garage implements Screen, Serializable {
     private ShapeRenderer mShapeRenderer;
     private final tankstars game;
     private final Texture backgroundImage;
-    private Texture tankImage;
+    private Texture tankImage ,turretImage;
     private final TextureRegion backgroundTexture;
     private final TextureRegion settings;
     private TextureRegion select,right,left;
@@ -40,24 +40,30 @@ public class garage implements Screen, Serializable {
     private int pl;
     private Music music;
     private player p1,p2;
-
+    private Sprite sprite1,sprite2;
+    private static player players[]=new player[2];
+    private String s;
+    private BitmapFont font;
     public garage(final tankstars game,int p) {
         this.pl=p;
         this.game = game;
+        font=new BitmapFont();
         batch=new SpriteBatch();
         mShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 580);
-        this.stage = new Stage(new FitViewport(800, 600,camera));
+        this.stage = new Stage(new FitViewport(800, 580,camera));
         Gdx.input.setInputProcessor(stage);
         stage.clear();
         backgroundImage = new Texture(Gdx.files.internal("garage.jpg"));
         backgroundTexture = new TextureRegion(backgroundImage, 0, 0, 388, 290);
         tankImage=tankslist[current].getTankImage();
+        turretImage=tankslist[current].getTurretImage();
         settings=new TextureRegion(new Texture(Gdx.files.internal("settings.png")),80,80);
         right=new TextureRegion(new Texture(Gdx.files.internal("right.png")));
         left=new TextureRegion(new Texture(Gdx.files.internal("left.png")));
         select=new TextureRegion(new Texture(Gdx.files.internal("select.png")));
+        this.s=String.format("PLAYER %d",p);
         music=Gdx.audio.newMusic(Gdx.files.internal("tank1/idle.mp3"));
         music.setLooping(true);
         music.play();
@@ -112,10 +118,16 @@ public class garage implements Screen, Serializable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //dispose();
-                p1=new player(tankslist[current]);
-                p2=new player(tankslist[current]);
-                music.stop();
-                game.setScreen(new GameScreen(game,p1,p2));
+                players[pl]=new player(tankslist[current]);
+                if(pl==0) {
+                    game.setScreen(new garage(game,1));
+                    dispose();
+                }
+//               music.stop();
+                else {
+                    game.setScreen(new GameScreen(game, players[0], players[1],null));
+                    dispose();
+                }
 
             }
         });
@@ -131,9 +143,16 @@ public class garage implements Screen, Serializable {
         ScreenUtils.clear(0, 0, 0, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+//        sprite1.setRegion(tankImage);
+//        sprite2.setRegion(turretImage);
         batch.begin();
         batch.draw(backgroundTexture, 0,0, 800, 600);
         batch.draw(tankImage, 180, 145,450,250);
+        font.getData().setScale(2);
+        font.draw(batch, s, 330, 500);
+//        sprite2.draw(batch);
+//        sprite1.draw(batch);
+
         batch.end();
         batch.flush();
         stage.act();
@@ -161,21 +180,26 @@ public class garage implements Screen, Serializable {
 
     @Override
     public void dispose() {
+        batch.dispose();
         stage.dispose();
         mShapeRenderer.dispose();
+        music.dispose();
+        font.dispose();
     }
     public void selectTankright(){
         if(current==2){
             current=-1;
         }
-        tankImage=tankslist[current+1].getTankImage();
+        this.tankImage=tankslist[current+1].getTankImage();
+//        this.turretImage=tankslist[current+1].getTurretImage();
         current++;
     }
     public void selectTankleft(){
         if(current==0){
             current=3;
         }
-        tankImage=tankslist[current-1].getTankImage();
+        this.tankImage=tankslist[current-1].getTankImage();
+//        this.turretImage=tankslist[current-1].getTurretImage();
         current--;
     }
 }

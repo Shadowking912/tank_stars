@@ -1,0 +1,13 @@
+
+healthbar.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+bar
+  rotate: false
+  xy: 1, 386
+  size: 469, 82
+  orig: 469, 82
+  offset: 0, 0
+  index: -1
